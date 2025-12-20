@@ -1,0 +1,10 @@
+{
+    "name": "nestorcornejo/inventarios-multiempresa-ws",
+    "description": "Backend for multi-company inventory system",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
