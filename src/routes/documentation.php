@@ -7,7 +7,7 @@
  * including request methods, URLs, headers, body examples, and expected responses.
  * Use this as a guide to test the API in Postman.
  *
- * Base URL: http://localhost:8000
+ * Base URL: http://localhost:8000/api/api
  * Content-Type: application/json for all requests with body.
  */
 
@@ -20,7 +20,7 @@
 /**
  * 1. CREATE USER
  * Method: POST
- * URL: http://localhost:8000/users
+ * URL: http://localhost:8000/api/users
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -47,7 +47,7 @@
 /**
  * 2. GET ALL USERS
  * Method: GET
- * URL: http://localhost:8000/users
+ * URL: http://localhost:8000/api/users
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -74,7 +74,7 @@
 /**
  * 3. GET USER BY ID
  * Method: GET
- * URL: http://localhost:8000/users/{id} (e.g., http://localhost:8000/users/1)
+ * URL: http://localhost:8000/api/users/{id} (e.g., http://localhost:8000/api/users/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -101,7 +101,7 @@
 /**
  * 4. UPDATE USER
  * Method: PUT
- * URL: http://localhost:8000/users/{id} (e.g., http://localhost:8000/users/1)
+ * URL: http://localhost:8000/api/users/{id} (e.g., http://localhost:8000/api/users/1)
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -127,7 +127,7 @@
 /**
  * 5. DELETE USER
  * Method: DELETE
- * URL: http://localhost:8000/users/{id} (e.g., http://localhost:8000/users/1)
+ * URL: http://localhost:8000/api/users/{id} (e.g., http://localhost:8000/api/users/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -147,7 +147,7 @@
 /**
  * 6. LOGIN USER
  * Method: POST
- * URL: http://localhost:8000/login
+ * URL: http://localhost:8000/api/login
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -182,7 +182,7 @@
 /**
  * 1. CREATE COMPANY
  * Method: POST
- * URL: http://localhost:8000/companies
+ * URL: http://localhost:8000/api/companies
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -210,7 +210,7 @@
 /**
  * 2. GET ALL COMPANIES
  * Method: GET
- * URL: http://localhost:8000/companies
+ * URL: http://localhost:8000/api/companies
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -239,7 +239,7 @@
 /**
  * 3. GET COMPANY BY ID
  * Method: GET
- * URL: http://localhost:8000/companies/{id} (e.g., http://localhost:8000/companies/1)
+ * URL: http://localhost:8000/api/companies/{id} (e.g., http://localhost:8000/api/companies/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -268,7 +268,7 @@
 /**
  * 4. UPDATE COMPANY
  * Method: PUT
- * URL: http://localhost:8000/companies/{id} (e.g., http://localhost:8000/companies/1)
+ * URL: http://localhost:8000/api/companies/{id} (e.g., http://localhost:8000/api/companies/1)
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -296,7 +296,7 @@
 /**
  * 5. DELETE COMPANY
  * Method: DELETE
- * URL: http://localhost:8000/companies/{id} (e.g., http://localhost:8000/companies/1)
+ * URL: http://localhost:8000/api/companies/{id} (e.g., http://localhost:8000/api/companies/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -322,7 +322,7 @@
 /**
  * 1. CREATE STORE
  * Method: POST
- * URL: http://localhost:8000/stores
+ * URL: http://localhost:8000/api/stores
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -350,7 +350,7 @@
 /**
  * 2. GET ALL STORES
  * Method: GET
- * URL: http://localhost:8000/stores
+ * URL: http://localhost:8000/api/stores
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -379,7 +379,7 @@
 /**
  * 3. GET STORE BY ID
  * Method: GET
- * URL: http://localhost:8000/stores/{id} (e.g., http://localhost:8000/stores/1)
+ * URL: http://localhost:8000/api/stores/{id} (e.g., http://localhost:8000/api/stores/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -408,7 +408,7 @@
 /**
  * 4. UPDATE STORE
  * Method: PUT
- * URL: http://localhost:8000/stores/{id} (e.g., http://localhost:8000/stores/1)
+ * URL: http://localhost:8000/api/stores/{id} (e.g., http://localhost:8000/api/stores/1)
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -436,7 +436,7 @@
 /**
  * 5. DELETE STORE
  * Method: DELETE
- * URL: http://localhost:8000/stores/{id} (e.g., http://localhost:8000/stores/1)
+ * URL: http://localhost:8000/api/stores/{id} (e.g., http://localhost:8000/api/stores/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -462,7 +462,7 @@
 /**
  * 1. CREATE PRODUCT
  * Method: POST
- * URL: http://localhost:8000/products
+ * URL: http://localhost:8000/api/products
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -492,7 +492,7 @@
 /**
  * 2. GET ALL PRODUCTS
  * Method: GET
- * URL: http://localhost:8000/products
+ * URL: http://localhost:8000/api/products
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -525,7 +525,7 @@
 /**
  * 3. GET PRODUCT BY ID
  * Method: GET
- * URL: http://localhost:8000/products/{id} (e.g., http://localhost:8000/products/1)
+ * URL: http://localhost:8000/api/products/{id} (e.g., http://localhost:8000/api/products/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -558,7 +558,7 @@
 /**
  * 4. UPDATE PRODUCT
  * Method: PUT
- * URL: http://localhost:8000/products/{id} (e.g., http://localhost:8000/products/1)
+ * URL: http://localhost:8000/api/products/{id} (e.g., http://localhost:8000/api/products/1)
  * Headers:
  *   - Content-Type: application/json
  * Body (JSON):
@@ -588,7 +588,7 @@
 /**
  * 5. DELETE PRODUCT
  * Method: DELETE
- * URL: http://localhost:8000/products/{id} (e.g., http://localhost:8000/products/1)
+ * URL: http://localhost:8000/api/products/{id} (e.g., http://localhost:8000/api/products/1)
  * Headers: None required
  * Body: None
  * Expected Response (Success - 200):
@@ -614,25 +614,25 @@
  *
  * 1. CREATE [TABLE]
  *    Method: POST
- *    URL: http://localhost:8000/[table]s
+ *    URL: http://localhost:8000/api/[table]s
  *    Body: JSON with required fields
  *
  * 2. GET ALL [TABLE]S
  *    Method: GET
- *    URL: http://localhost:8000/[table]s
+ *    URL: http://localhost:8000/api/[table]s
  *
  * 3. GET [TABLE] BY ID
  *    Method: GET
- *    URL: http://localhost:8000/[table]s/{id}
+ *    URL: http://localhost:8000/api/[table]s/{id}
  *
  * 4. UPDATE [TABLE]
  *    Method: PUT
- *    URL: http://localhost:8000/[table]s/{id}
+ *    URL: http://localhost:8000/api/[table]s/{id}
  *    Body: JSON with fields to update
  *
  * 5. DELETE [TABLE]
  *    Method: DELETE
- *    URL: http://localhost:8000/[table]s/{id}
+ *    URL: http://localhost:8000/api/[table]s/{id}
  *
  * Add specific endpoints as needed (e.g., login for users).
  *
