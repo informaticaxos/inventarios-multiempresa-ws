@@ -117,6 +117,32 @@ elseif (preg_match('/\/api\/products\/(\d+)/', $request, $matches)) {
         $productController->delete($id);
     }
 }
+
+// Rutas para store_product
+elseif ($request == '/api/store_product' || $request == '/api/store_product/') {
+    if ($method == 'POST') {
+        // Crear o actualizar stock-producto-bodega
+        $storeProductController->create();
+    } elseif ($method == 'PUT') {
+        // Actualizar stock-producto-bodega
+        $storeProductController->update();
+    } elseif ($method == 'DELETE') {
+        // Eliminar relación stock-producto-bodega
+        $storeProductController->delete();
+    }
+}
+elseif (preg_match('/\/api\/store_product\/product\/(\d+)/', $request, $matches)) {
+    $productId = $matches[1];
+    if ($method == 'GET') {
+        $storeProductController->readByProduct($productId);
+    }
+}
+elseif (preg_match('/\/api\/store_product\/store\/(\d+)/', $request, $matches)) {
+    $storeId = $matches[1];
+    if ($method == 'GET') {
+        $storeProductController->readByStore($storeId);
+    }
+}
 // Default: Endpoint not found
 else {
     http_response_code(404);

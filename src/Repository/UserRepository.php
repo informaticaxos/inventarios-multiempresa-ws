@@ -13,6 +13,24 @@ class UserRepository {
         $this->conn = $db;
     }
 
+    // Paginación de usuarios
+    public function readPaginated($limit, $offset) {
+        $query = "SELECT id_user, dni_user, username_user, email_user FROM " . $this->table_name . " ORDER BY id_user DESC LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $totalQuery = "SELECT COUNT(*) as total FROM " . $this->table_name;
+        $totalStmt = $this->conn->prepare($totalQuery);
+        $totalStmt->execute();
+        $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        return [
+            'users' => $users,
+            'total' => (int)$total
+        ];
+    }
+
     public function create(User $user) {
         // Check if user with this DNI already exists
         $query_check = "SELECT id_user FROM " . $this->table_name . " WHERE dni_user = :dni LIMIT 1";
@@ -92,17 +110,33 @@ class UserRepository {
         return false;
     }
 
-    public function login($username, $password) {
-        $query = "SELECT id_user, password_user FROM " . $this->table_name . " WHERE username_user = ? LIMIT 0,1";
+    // Login con detalle de error
+    public function loginWithDetail($username, $password) {
+        $query = "SELECT id_user, dni_user, username_user, email_user, password_user FROM " . $this->table_name . " WHERE username_user = ? LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $username);
         $stmt->execute();
-        if($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if(password_verify($password, $row['password_user'])) {
-                return $row['id_user'];
-            }
+        if ($stmt->rowCount() === 0) {
+            return [
+                'success' => false,
+                'message' => 'Usuario no encontrado.'
+            ];
         }
-        return false;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!password_verify($password, $row['password_user'])) {
+            return [
+                'success' => false,
+                'message' => 'Contraseña incorrecta.'
+            ];
+        }
+        $user = new User();
+        $user->id_user = $row['id_user'];
+        $user->dni_user = $row['dni_user'];
+        $user->username_user = $row['username_user'];
+        $user->email_user = $row['email_user'];
+        return [
+            'success' => true,
+            'user' => $user
+        ];
     }
 }

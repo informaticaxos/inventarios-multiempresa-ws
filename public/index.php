@@ -17,7 +17,9 @@ use App\Config\Database;
 use App\Controllers\UserController;
 use App\Controllers\CompanyController;
 use App\Controllers\StoreController;
+
 use App\Controllers\ProductController;
+use App\Controllers\StoreProductController;
 
 $database = new Database();
 $db = $database->getConnection();
@@ -25,6 +27,8 @@ $db = $database->getConnection();
 $userController = new UserController($db);
 $companyController = new CompanyController($db);
 $storeController = new StoreController($db);
+
 $productController = new ProductController($db);
+$storeProductController = new StoreProductController($db);
 
 require_once '../src/routes/index.php';

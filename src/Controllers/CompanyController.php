@@ -39,23 +39,25 @@ class CompanyController {
     }
 
     public function read() {
-        $stmt = $this->companyRepository->read();
-        $num = $stmt->rowCount();
-        if($num > 0) {
-            $companies_arr = array();
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $company_item = array(
-                    "id_company" => $row['id_company'],
-                    "dni_company" => $row['dni_company'],
-                    "name_company" => $row['name_company'],
-                    "phone_company" => $row['phone_company'],
-                    "email_company" => $row['email_company'],
-                    "address_company" => $row['address_company']
-                );
-                array_push($companies_arr, $company_item);
-            }
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+        $offset = ($page - 1) * $limit;
+        $result = $this->companyRepository->readPaginated($limit, $offset);
+        $companies = $result['companies'];
+        $total = $result['total'];
+        if(count($companies) > 0) {
             http_response_code(200);
-            echo json_encode(array("state" => 1, "message" => "Companies found.", "data" => $companies_arr));
+            echo json_encode(array(
+                "state" => 1,
+                "message" => "Companies found.",
+                "data" => $companies,
+                "pagination" => array(
+                    "page" => $page,
+                    "limit" => $limit,
+                    "total" => $total,
+                    "pages" => ceil($total / $limit)
+                )
+            ));
         } else {
             http_response_code(404);
             echo json_encode(array("state" => 0, "message" => "No companies found.", "data" => array()));

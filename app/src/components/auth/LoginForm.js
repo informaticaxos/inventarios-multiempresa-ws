@@ -1,64 +1,87 @@
+
 import React, { useState } from 'react';
 import { TextField, Button, Paper, Typography, Box } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import Swal from 'sweetalert2';
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('ncornejo');
+  const [password, setPassword] = useState('Root93...');
   const [error, setError] = useState('');
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
-      const response = await api.post('/login', { email, password });
+      const response = await api.post('/login', { username, password });
       if (response.data.state) {
         login(response.data.data.user, response.data.data.token);
-        // Redirect to dashboard
-        window.location.href = '/';
+        Swal.fire({
+          icon: 'success',
+          title: '¡Bienvenido!',
+          text: 'Login exitoso',
+          timer: 1200,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.href = '/';
+        });
       } else {
         setError(response.data.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: response.data.message || 'Error al iniciar sesión',
+        });
       }
     } catch (err) {
-      setError('Login failed');
+      setError('Error de conexión o del servidor');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response?.data?.message || 'Error de conexión o del servidor',
+      });
     }
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 400, mx: 'auto', mt: 8 }}>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Login
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          margin="normal"
-          required
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          margin="normal"
-          required
-        />
-        {error && (
-          <Typography color="error" sx={{ mt: 1 }}>
-            {error}
-          </Typography>
-        )}
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'background.default' }}>
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: '100%', mx: 2 }}>
+        <Typography variant="h5" component="h1" gutterBottom align="center">
           Login
-        </Button>
-      </Box>
-    </Paper>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            margin="normal"
+            required
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            margin="normal"
+            required
+            variant="outlined"
+          />
+          {error && (
+            <Typography color="error" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, py: 1.5 }}>
+            Login
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

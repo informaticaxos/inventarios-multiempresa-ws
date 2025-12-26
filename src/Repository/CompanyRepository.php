@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Repository;
-
 use PDO;
 use App\Models\Company;
 
@@ -11,6 +9,24 @@ class CompanyRepository {
 
     public function __construct($db) {
         $this->conn = $db;
+    }
+
+    // Paginación de empresas
+    public function readPaginated($limit, $offset) {
+        $query = "SELECT id_company, dni_company, name_company, phone_company, email_company, address_company FROM " . $this->table_name . " ORDER BY id_company DESC LIMIT :limit OFFSET :offset";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $totalQuery = "SELECT COUNT(*) as total FROM " . $this->table_name;
+        $totalStmt = $this->conn->prepare($totalQuery);
+        $totalStmt->execute();
+        $total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        return [
+            'companies' => $companies,
+            'total' => (int)$total
+        ];
     }
 
     public function create(Company $company) {

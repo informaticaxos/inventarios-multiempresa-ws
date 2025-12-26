@@ -38,23 +38,25 @@ class UserController {
     }
 
     public function read() {
-        $stmt = $this->userRepository->read();
-        $num = $stmt->rowCount();
-        if($num > 0) {
-            $users_arr = array();
-            $users_arr["records"] = array();
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                extract($row);
-                $user_item = array(
-                    "id_user" => $id_user,
-                    "dni_user" => $dni_user,
-                    "username_user" => $username_user,
-                    "email_user" => $email_user
-                );
-                array_push($users_arr["records"], $user_item);
-            }
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+        $offset = ($page - 1) * $limit;
+        $result = $this->userRepository->readPaginated($limit, $offset);
+        $users = $result['users'];
+        $total = $result['total'];
+        if(count($users) > 0) {
             http_response_code(200);
-            echo json_encode(array("state" => 1, "message" => "Users found.", "data" => $users_arr["records"]));
+            echo json_encode(array(
+                "state" => 1,
+                "message" => "Users found.",
+                "data" => $users,
+                "pagination" => array(
+                    "page" => $page,
+                    "limit" => $limit,
+                    "total" => $total,
+                    "pages" => ceil($total / $limit)
+                )
+            ));
         } else {
             http_response_code(404);
             echo json_encode(array("state" => 0, "message" => "No users found.", "data" => array()));
@@ -111,18 +113,41 @@ class UserController {
 
     public function login() {
         $data = json_decode(file_get_contents("php://input"));
-        if(!empty($data->username) && !empty($data->password)) {
-            $id = $this->userRepository->login($data->username, $data->password);
-            if($id) {
-                http_response_code(200);
-                echo json_encode(array("state" => 1, "message" => "Login successful.", "data" => array(array("id_user" => $id))));
-            } else {
-                http_response_code(401);
-                echo json_encode(array("state" => 0, "message" => "Login failed.", "data" => array()));
-            }
-        } else {
+        if (empty($data->username) || empty($data->password)) {
             http_response_code(400);
-            echo json_encode(array("state" => 0, "message" => "Unable to login. Data is incomplete.", "data" => array()));
+            echo json_encode(array(
+                "state" => 0,
+                "message" => "Por favor, ingrese usuario y contraseña.",
+                "data" => array()
+            ));
+            return;
+        }
+
+        $loginResult = $this->userRepository->loginWithDetail($data->username, $data->password);
+        if ($loginResult['success']) {
+            $user = $loginResult['user'];
+            $token = base64_encode(random_bytes(32));
+            http_response_code(200);
+            echo json_encode(array(
+                "state" => 1,
+                "message" => "Login exitoso.",
+                "data" => array(
+                    "user" => array(
+                        "id_user" => $user->id_user,
+                        "dni_user" => $user->dni_user,
+                        "username_user" => $user->username_user,
+                        "email_user" => $user->email_user
+                    ),
+                    "token" => $token
+                )
+            ));
+        } else {
+            http_response_code(401);
+            echo json_encode(array(
+                "state" => 0,
+                "message" => $loginResult['message'],
+                "data" => array()
+            ));
         }
     }
 }
